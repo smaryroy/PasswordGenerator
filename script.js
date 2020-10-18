@@ -26,7 +26,7 @@ function clearUserOptions() {
 function isInteger(str) {
     //test to see if string is a valid integer
     if (typeof str != "string") return false;
-    return !(parseInt(str) === NaN);
+    return !isNaN(str) && !isNaN(parseInt(str))
 }
 
 function isCharYorN(str) {
@@ -34,7 +34,8 @@ function isCharYorN(str) {
     //test to see if string is a single character
     if (typeof str != "string") return false;
     if (!(str.length === 1 && str.match(/[a-z]/i))) return false;
-    console.log(str.toUpperCase());
+
+    //also test to see if it is Y or N, case insensitive
     if (str.toUpperCase() !== "Y" && str.toUpperCase() !== "N") {
         return false;
     }
@@ -70,7 +71,7 @@ function askForComposition() {
 
     let response1 = prompt("Should the password contain at least one lowercase character? Enter Y or N: ")
     if (!isCharYorN(response1)) {
-        alert("Invalid entry 1.");
+        alert("Invalid Y/N response.");
         clearUserOptions();
         return false;
     } else if (response1.toUpperCase() === "Y") {
@@ -85,7 +86,7 @@ function askForComposition() {
             selectionCount++;
         }
     } else {
-        alert("Invalid entry.");
+        alert("Invalid Y/N response.");
         clearUserOptions();
         return false;
     }
@@ -97,12 +98,10 @@ function askForComposition() {
             selectionCount++;
         }
     } else {
-        alert("Invalid entry.");
+        alert("Invalid Y/N response.");
         clearUserOptions();
         return false;
     }
-
-
 
     let response4 = prompt("Should the password contain at least one special character? Enter Y or N: ")
     if (isCharYorN(response4)) {
@@ -111,7 +110,7 @@ function askForComposition() {
             selectionCount++;
         }
     } else {
-        alert("Invalid entry.");
+        alert("Invalid Y/N response.");
         clearUserOptions();
         return false;
     }
@@ -128,7 +127,7 @@ function askForComposition() {
 }
 
 function contains(string, array) {
-    //see if the string has at least one item from the array in it
+    //see if the string contains at least one item from the array 
     length = array.length;
     while (length--) {
         if (string.indexOf(array[length]) != -1) {
@@ -142,9 +141,9 @@ function generatePassword() {
     if (!validatedInput) {
         return "";
     }
+
+    //combine characters from all selected sets into one array
     let comboChars = [];
-
-
     if (userOptions.includeLower) {
         for (let i = 0; i < lowerChars.length; i++) {
             comboChars.push(lowerChars[i]);
@@ -165,11 +164,12 @@ function generatePassword() {
             comboChars.push(symbols[i]);
         }
     }
-    console.log("Chars to select from", comboChars);
+    //console.log("Chars to select from", comboChars);
 
     let password = "";
     let isPasswordSet;
     do {
+        //randomly select n number of characters from the combo array
         for (var i = 0; i < userOptions.pwLength; i++) {
             let randomIndex = Math.floor(Math.random() * comboChars.length);
             password = password + comboChars[randomIndex];
@@ -177,6 +177,7 @@ function generatePassword() {
 
         isPasswordSet = true;
 
+        //make sure we have matched all criteria , try again if we missed including something
         if (userOptions.includeLower) {
             if (!contains(password, lowerChars)) {
                 isPasswordSet = false;
@@ -198,7 +199,7 @@ function generatePassword() {
             }
         }
 
-        console.log("test pw", password, isPasswordSet);
+        //console.log("test pw", password, isPasswordSet);
     } while (!isPasswordSet);
 
 
@@ -206,11 +207,14 @@ function generatePassword() {
 
 }
 
-// Write password to the #password input
+
 function writePassword() {
-    //prompt for user inputs
+
     validatedInput = false;
+
+    //prompt for user inputs
     if (askForLength() && askForComposition()) {
+        // Write password to the #password input
         validatedInput = true;
         document.querySelector("#password").value = generatePassword();
     }
