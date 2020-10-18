@@ -209,7 +209,8 @@ function generatePassword() {
 
 
 function writePassword() {
-
+    document.querySelector("#password").value = "";
+    document.querySelector("#password").setAttribute("style", "background-color:white;")
     validatedInput = false;
 
     //prompt for user inputs
@@ -217,6 +218,7 @@ function writePassword() {
         // Write password to the #password input
         validatedInput = true;
         document.querySelector("#password").value = generatePassword();
+        document.querySelector("#password").setAttribute("style", "background-color:#AEE583;")
     }
 }
 
