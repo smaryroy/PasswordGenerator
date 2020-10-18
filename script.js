@@ -21,6 +21,11 @@ function clearUserOptions() {
     userOptions.includeUpper = false;
     userOptions.includeNumbers = false;
     userOptions.includeSymbols = false;
+    document.querySelector("#password").value = "";
+    document.querySelector("#password").setAttribute("style", "background-color:white;")
+    validatedInput = false;
+
+
 }
 
 function isInteger(str) {
@@ -43,7 +48,6 @@ function isCharYorN(str) {
 }
 
 function askForLength() {
-    clearUserOptions();  //clear last response, if any
 
     let response = prompt("Enter minimum password length (8 - 128): ");
 
@@ -209,9 +213,7 @@ function generatePassword() {
 
 
 function writePassword() {
-    document.querySelector("#password").value = "";
-    document.querySelector("#password").setAttribute("style", "background-color:white;")
-    validatedInput = false;
+    clearUserOptions();  //clear last response, if any
 
     //prompt for user inputs
     if (askForLength() && askForComposition()) {
@@ -225,3 +227,4 @@ function writePassword() {
 // Add event listener to generate button
 generateBtn.addEventListener("click", writePassword);
 
+clearUserOptions();  //clear last response, if any
