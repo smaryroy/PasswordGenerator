@@ -23,7 +23,7 @@ Upon valid input, a password will be generated and displayed on the screen.  Oth
 
 This site is published at  https://smaryroy.github.io/PasswordGenerator/
 
-![Password Generator Web Page](./assets/images/PasswordGenerator.png)
+![Password Generator Web Page](./assets/images/PasswordGenerator.png )
 
 
 ## Credits
